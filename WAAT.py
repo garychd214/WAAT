@@ -134,12 +134,11 @@ while True:
     WAP_Broad = input("Does target WAP broadcast ESSID? (no for 0, yes for 1) \n")
     try:
         if WAP_Broad == "0" or WAP_Broad == "1":
-            break;
+            break
     except:
         print("Invalid input, please try again")
         
 #create csv file and dump it
-default_ind = 'Green'
 try:
     while True:
         for file_name in os.listdir():
@@ -147,13 +146,17 @@ try:
             if ".csv" in file_name:
                 with open(file_name) as csv_h:
                     csv_h.seek(0)
-                    csv_reader = csv.DictReader(csv_h, fieldnames=fieldnames)
+                    # Adding Encryption (security) indicator, Cipher (security) indicator, (Security) alert column
+                    csv_reader = csv.DictReader(csv_h, fieldnames=fieldnames + ['Encryption_ind'] + ['Cipher_ind'] + ['Alert'])
                     for row in csv_reader:
                         if row["BSSID"] == "BSSID":
                             pass
                         elif row["BSSID"] == "Station MAC":
                             break
                         elif Checking_Bssid(row["BSSID"], wireless_lists):
+                            row["Encryption_ind"] = "Green"
+                            row["Cipher_ind"] = "Green"
+                            row["Alert"] = "Green"
                             wireless_lists.append(row)
 
             # Wireless Access Point Broadcasting
@@ -185,19 +188,3 @@ except KeyboardInterrupt:
     print("\Please enter index number of the access point")
     # Debug
     print(wireless_lists)
-
-    """ Alert Script
-    # Defualt Encryption_ind = green
-    wireless_lists.append(default_ind)
-    # Defualt Cipher_ind = green
-    wireless_lists.append(default_ind)
-    # Defualt alert = green
-    wireless_lists.append(default_ind)
-    
-    if item['Privacy'] == "WEP" or item['Privacy'] == "WPA" or item['Privacy'] == "OPN":
-        item['alert'] == "RED"
-        item['encryption_ind'] == "Red"
-    if item['Cipher'] == "TKIP" or item['Cipher'] == "":
-        item['alert'] == "RED"
-        item['Cipher_ind'] == "RED"
-    """
