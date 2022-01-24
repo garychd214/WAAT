@@ -12,7 +12,7 @@ import time
 import shutil
 from datetime import datetime
 
-wireless_interface = []
+wireless_lists = []
 evaluated_list = []
 
 def banner():
@@ -47,7 +47,7 @@ def backup_old_csv():
             timestamp = datetime.now()
             shutil.move(file_name, directory + "/backup/" + file_name + "-" + str(timestamp))
 
-def Chekcing_Essid(essid, lst):
+def Checking_Bssid(bssid, lst):
     check_status = True
     # If no ESSIDs in list add the row
     if len(lst) == 0:
@@ -56,7 +56,7 @@ def Chekcing_Essid(essid, lst):
     # This will only run if there are wireless access points in the list.
     for item in lst:
         # If True don't add to list. False will add it to list
-        if essid in item["ESSID"]:
+        if bssid in item["BSSID"]:
             check_status = False
     return check_status
 
@@ -127,12 +127,23 @@ backup_old_csv()
 # Discover access points
 discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"file","--write-interval", "1","--output-format", "csv", wlan_using + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+# Check if target WAP broadcast ESSID
+clear()
+banner()
+while True:
+    WAP_Broad = input("Does target WAP broadcast ESSID? (no for 0, yes for 1) \n")
+    try:
+        if WAP_Broad == "0" or WAP_Broad == "1":
+            break;
+    except:
+        print("Invalid input, please try again")
+        
 #create csv file and dump it
+default_ind = 'Green'
 try:
     while True:
-        clear()
         for file_name in os.listdir():
-            fieldnames = ['BSSID', 'First_time_seen', 'Last_time_seen', 'channel', 'Speed', 'Privacy', 'Cipher', 'Authentication', 'Power', 'beacons', 'IV', 'LAN_IP', 'ID_length', 'ESSID', 'Key']
+            fieldnames = ['BSSID', 'First_time_seen', 'Last_time_seen', 'channel', 'Speed', 'Privacy', 'Cipher', 'Authentication', 'Power', 'beacons', 'IV', 'LAN_IP', 'ID_length', 'ESSID', 'Key', 'Encryption_ind', 'Cipher_ind', 'alert']
             if ".csv" in file_name:
                 with open(file_name) as csv_h:
                     csv_h.seek(0)
@@ -142,11 +153,15 @@ try:
                             pass
                         elif row["BSSID"] == "Station MAC":
                             break
-                        elif Chekcing_Essid(row["ESSID"], wireless_interface):
-                            wireless_interface.append(row)
-                            wireless_interface.insert(item['encryption_ind'] == "Green")
-                            wireless_interface.insert(item['Cipher_ind'] == "Green")
-                            wireless_interface.insert(item['alert'] == "Green")
+                        elif Checking_Bssid(row["BSSID"], wireless_lists):
+                            wireless_lists.append(row)
+                            """
+							# Defualt Encryption_ind = green
+							wireless_lists.append(default_ind)
+							# Defualt Cipher_ind = green
+                            wireless_lists.append(default_ind)
+							# Defualt alert = green
+                            wireless_lists.append(default_ind)
                             
                             if item['Privacy'] == "WEP" or item['Privacy'] == "WPA" or item['Privacy'] == "OPN":
                                 item['alert'] == "RED"
@@ -154,16 +169,26 @@ try:
                             if item['Cipher'] == "TKIP" or item['Cipher'] == "":
                                 item['alert'] == "RED"
                                 item['Cipher_ind'] == "RED"
-            
-            print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
-            # showing only ESSID
-            print("No ||\tESSID                         |")
-            print("___||\t______________________________|")
-            #for index, item in enumerate(wireless_interface):
-            print(wireless_interface)
+							"""
+            if(WAP_Broad == "1"):
+                clear()
+                print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
+                # showing only ESSID
+                print("No ||\tESSID                         |")
+                print("___||\t______________________________|")
+                for index, item in enumerate(wireless_lists):
+                    print(f"{index}\t{item['ESSID']}")
+            if(WAP_Broad == "0"):
+                clear()
+                print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
+                # showing only ESSID
+                print("No |\tBSSID              |\tID_length|\tESSID                         |")
+                print("___|\t___________________|\t_________|\t______________________________|")
+                for index, item in enumerate(wireless_lists):
+                    print(f"{index}\t{item['BSSID']}\t{item['ID_length'].strip()}\t\t{item['ESSID']}")
                 
-        # We make the script sleep for 1 second before loading the updated list.
+        # The script sleep for 1 second before loading the updated list.
         time.sleep(1)
-
+        
 except KeyboardInterrupt:
     print("\Please enter index number of the access point")
