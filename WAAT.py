@@ -124,8 +124,8 @@ wlan_monitoring_mode = subprocess.run(["sudo", "airmon-ng", "start", wlan_using]
 #before creating csv file, move csv file to the backup folder
 backup_old_csv()
 
-# Discover access points
-discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"file","--write-interval", "1","--output-format", "csv", wlan_using + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+# Discover access points and output to WAP_list-01.csv
+discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"WAP_list","--write-interval", "1","--output-format", "csv", wlan_using + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 # Check if target WAP broadcast ESSID
 clear()
@@ -143,7 +143,7 @@ default_ind = 'Green'
 try:
     while True:
         for file_name in os.listdir():
-            fieldnames = ['BSSID', 'First_time_seen', 'Last_time_seen', 'channel', 'Speed', 'Privacy', 'Cipher', 'Authentication', 'Power', 'beacons', 'IV', 'LAN_IP', 'ID_length', 'ESSID', 'Key', 'Encryption_ind', 'Cipher_ind', 'alert']
+            fieldnames = ['BSSID', 'First_time_seen', 'Last_time_seen', 'channel', 'Speed', 'Privacy', 'Cipher', 'Authentication', 'Power', 'beacons', 'IV', 'LAN_IP', 'ID_length', 'ESSID', 'Key']
             if ".csv" in file_name:
                 with open(file_name) as csv_h:
                     csv_h.seek(0)
@@ -155,21 +155,8 @@ try:
                             break
                         elif Checking_Bssid(row["BSSID"], wireless_lists):
                             wireless_lists.append(row)
-                            """
-							# Defualt Encryption_ind = green
-							wireless_lists.append(default_ind)
-							# Defualt Cipher_ind = green
-                            wireless_lists.append(default_ind)
-							# Defualt alert = green
-                            wireless_lists.append(default_ind)
-                            
-                            if item['Privacy'] == "WEP" or item['Privacy'] == "WPA" or item['Privacy'] == "OPN":
-                                item['alert'] == "RED"
-                                item['encryption_ind'] == "Red"
-                            if item['Cipher'] == "TKIP" or item['Cipher'] == "":
-                                item['alert'] == "RED"
-                                item['Cipher_ind'] == "RED"
-							"""
+
+            # Wireless Access Point Broadcasting
             if(WAP_Broad == "1"):
                 clear()
                 print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
@@ -178,6 +165,7 @@ try:
                 print("___||\t______________________________|")
                 for index, item in enumerate(wireless_lists):
                     print(f"{index}\t{item['ESSID']}")
+            # Wireless Access Point NOT Broadcasting
             if(WAP_Broad == "0"):
                 clear()
                 print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
@@ -191,4 +179,25 @@ try:
         time.sleep(1)
         
 except KeyboardInterrupt:
+    # Rocever Wlan Interface
+    wlan_stop_monitoring_mode = subprocess.run(["sudo", "airmon-ng", "stop", wlan_using + "mon"])
+    start_Network_manager = subprocess.run(["sudo", "systemctl", "start", "NetworkManager"])
     print("\Please enter index number of the access point")
+    # Debug
+    print(wireless_lists)
+
+    """ Alert Script
+    # Defualt Encryption_ind = green
+    wireless_lists.append(default_ind)
+    # Defualt Cipher_ind = green
+    wireless_lists.append(default_ind)
+    # Defualt alert = green
+    wireless_lists.append(default_ind)
+    
+    if item['Privacy'] == "WEP" or item['Privacy'] == "WPA" or item['Privacy'] == "OPN":
+        item['alert'] == "RED"
+        item['encryption_ind'] == "Red"
+    if item['Cipher'] == "TKIP" or item['Cipher'] == "":
+        item['alert'] == "RED"
+        item['Cipher_ind'] == "RED"
+    """
