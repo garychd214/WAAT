@@ -133,7 +133,7 @@ banner()
 while True:
     WAP_Broad = input("Does target WAP broadcast ESSID? (no for 0, yes for 1) \n")
     try:
-        if WAP_Broad == "0" or WAP_Broad == "1":
+        if int(WAP_Broad) == "0" or int(WAP_Broad) == "1":
             break
     except:
         print("Invalid input, please try again")
@@ -197,7 +197,7 @@ for i in range(len(comparing_lists)):
 	for j in range(len(comparing_lists)):
 		if i != j:
 			if comparing_lists[i] != " " and comparing_lists[i] == comparing_lists[j]:
-				wireless_lists[i]['Evil_Twin_ind'] = "Red"
+				wireless_lists[i]['Evil_Twin_ind'] = "_Red_"
 
 # Clear Comparing list for next checkup                
 comparing_lists.clear()
@@ -207,48 +207,51 @@ comparing_lists.clear()
 # For Cipher: TKIP or OPEN is always Red, AES (CCMP) is Green for WPA2 and Amber for WPA 
 for i in range(len(wireless_lists)):
     if "WEP" in wireless_lists[i]['Privacy']:
-        wireless_lists[i]['Encryption_ind'] = "Red"
+        wireless_lists[i]['Encryption_ind'] = "_Red_"
 		
     elif "WPA2" in wireless_lists[i]['Privacy']:
         if "TKIP" in wireless_lists[i]['Cipher']:
-            wireless_lists[i]['Cipher_ind'] = "Red"
+            wireless_lists[i]['Cipher_ind'] = "_Red_"
 			        
     elif "WPA" in wireless_lists[i]['Privacy']:
         if "TKIP" in wireless_lists[i]['Cipher']:
-            wireless_lists[i]['Encryption_ind'] = "Red"
-            wireless_lists[i]['Cipher_ind'] = "Red"
+            wireless_lists[i]['Encryption_ind'] = "_Red_"
+            wireless_lists[i]['Cipher_ind'] = "_Red_"
         elif "AES" or "CCMP" in wireless_lists[i]['Cipher']:
             wireless_lists[i]['Encryption_ind'] = "Amber"
             wireless_lists[i]['Cipher_ind'] = "Amber"
 			
     elif "OPN" in wireless_lists[i]['Privacy']:
-        wireless_lists[i]['Encryption_ind'] = "Red"
-        wireless_lists[i]['Cipher_ind'] = "Red"
+        wireless_lists[i]['Encryption_ind'] = "_Red_"
+        wireless_lists[i]['Cipher_ind'] = "_Red_"
         
     else:
         print("Index: ",i,", BSSID: ", wireless_lists[i]['BSSID'], " has Encryption/Chipher error")
 		
 # Set Alert.
 for i in range(len(wireless_lists)):
-    if wireless_lists[i]['Evil_Twin_ind'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber":
+    if wireless_lists[i]['Evil_Twin_ind'] == "Amber" or wireless_lists[i]['Privacy'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber":
         if wireless_lists[i]['Alert'] == "Green":
             wireless_lists[i]['Alert'] = "Amber"
-    elif wireless_lists[i]['Evil_Twin_ind'] == "Red" or wireless_lists[i]['Cipher_ind'] == "Red" or wireless_lists[i]['Cipher_ind'] == "Red":
+    elif wireless_lists[i]['Evil_Twin_ind'] == "_Red_" or wireless_lists[i]['Privacy'] == "_Red_" or wireless_lists[i]['Cipher_ind'] == "_Red_":
         if wireless_lists[i]['Alert'] == "Green" or "Amber":
-            wireless_lists[i]['Alert'] = "Red"
+            wireless_lists[i]['Alert'] = "_Red_"
 
 print("\n")
 
-while True:
-    choice = input("Please make choice you wish to Check")
-    try:
-        if wireless_lists[int(choice)]:
-            break
-    except:
-        print("Invalid Input. \n Please try again. \n")
 
-try:
-    
+user_stop_ind = False
+
+while user_stop_ind == False:
     while True:
-
-except KeyboardInterrupt:
+        choice = input("Please make choice you wish to Check")
+        try:
+            if wireless_lists[int(choice)]:
+                break
+        except:
+            print("Invalid Input. \n Please try again. \n")
+    
+    print(wireless_lists[int(choice)]['BSSID'], "\n \n")
+    print("|____EvilTwin____|\t___Encryption___|\t_____Cipher_____|")
+    print(f"|_____{wireless_lists[int(choice)]['Evil_Twin_ind']}_____|\t_____{wireless_lists[int(choice)]['Privacy']}_____|\t_____{wireless_lists[int(choice)]['Cipher_ind']}_____")
+    

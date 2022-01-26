@@ -126,7 +126,7 @@ for i in range(len(comparing_lists)):
 	for j in range(len(comparing_lists)):
 		if i != j:
 			if comparing_lists[i] != " " and comparing_lists[i] == comparing_lists[j]:
-				wireless_lists[i]['Evil_Twin_ind'] = "Red"
+				wireless_lists[i]['Evil_Twin_ind'] = "_Red_"
 
 # Clear Comparing list for next checkup                
 comparing_lists.clear()
@@ -136,36 +136,36 @@ comparing_lists.clear()
 # For Cipher: TKIP or OPEN is always Red, AES (CCMP) is Green for WPA2 and Amber for WPA 
 for i in range(len(wireless_lists)):
     if "WEP" in wireless_lists[i]['Privacy']:
-        wireless_lists[i]['Encryption_ind'] = "Red"
+        wireless_lists[i]['Encryption_ind'] = "_Red_"
 		
     elif "WPA2" in wireless_lists[i]['Privacy']:
         if "TKIP" in wireless_lists[i]['Cipher']:
-            wireless_lists[i]['Cipher_ind'] = "Red"
+            wireless_lists[i]['Cipher_ind'] = "_Red_"
 			        
     elif "WPA" in wireless_lists[i]['Privacy']:
         if "TKIP" in wireless_lists[i]['Cipher']:
-            wireless_lists[i]['Encryption_ind'] = "Red"
-            wireless_lists[i]['Cipher_ind'] = "Red"
+            wireless_lists[i]['Encryption_ind'] = "_Red_"
+            wireless_lists[i]['Cipher_ind'] = "_Red_"
         elif "AES" or "CCMP" in wireless_lists[i]['Cipher']:
             wireless_lists[i]['Encryption_ind'] = "Amber"
             wireless_lists[i]['Cipher_ind'] = "Amber"
 			
     elif "OPN" in wireless_lists[i]['Privacy']:
-        wireless_lists[i]['Encryption_ind'] = "Red"
-        wireless_lists[i]['Cipher_ind'] = "Red"
+        wireless_lists[i]['Encryption_ind'] = "_Red_"
+        wireless_lists[i]['Cipher_ind'] = "_Red_"
         
     else:
         print("Index: ",i,", BSSID: ", wireless_lists[i]['BSSID'], " has Encryption/Chipher error")
 		
 # Set Alert.
 for i in range(len(wireless_lists)):
-    if wireless_lists[i]['Evil_Twin_ind'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber":
+    if wireless_lists[i]['Evil_Twin_ind'] == "Amber" or wireless_lists[i]['Privacy'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber":
         if wireless_lists[i]['Alert'] == "Green":
             wireless_lists[i]['Alert'] = "Amber"
-    elif wireless_lists[i]['Evil_Twin_ind'] == "Red" or wireless_lists[i]['Cipher_ind'] == "Red" or wireless_lists[i]['Cipher_ind'] == "Red":
+    elif wireless_lists[i]['Evil_Twin_ind'] == "_Red_" or wireless_lists[i]['Privacy'] == "_Red_" or wireless_lists[i]['Cipher_ind'] == "_Red_":
         if wireless_lists[i]['Alert'] == "Green" or "Amber":
-            wireless_lists[i]['Alert'] = "Red"
-	
+            wireless_lists[i]['Alert'] = "_Red_"
+
 #print(comparing_lists)
 
 check(1)
