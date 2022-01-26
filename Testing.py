@@ -60,84 +60,17 @@ def Checking_Bssid(bssid, lst):
             check_status = False
     return check_status
 
+def check(test_var):
+    print(wireless_lists[test_var]['Privacy'])
+    print(wireless_lists[test_var]['Cipher'])
+    print(wireless_lists[test_var]['Evil_Twin_ind'])
+    print(wireless_lists[test_var]['Encryption_ind'])
+    print(wireless_lists[test_var]['Cipher_ind'])
+    print(wireless_lists[test_var]['Alert'])
 
-clear()
-banner()
+WAP_Broad = 0
 
-## Initial Checkup, 
-# 1. Check if it's running wiht sudo.
-# 2. Check if aircrack-ng package is installed.
 
-# If script doesn't run with super user privileges, break the script
-if not 'SUDO_UID' in os.environ.keys():
-    print("Please run the script with sudo")
-    exit()
-
-# Check if aircrack-ng package is installed
-res = subprocess.run('dpkg-query -l aircrack-ng', shell=True)
-if(res.returncode != 0):
-    print("Please install aircrack-ng")
-    exit()
-else:
-    clear()
-    banner()
-
-# wlan interface finder
-wlan_finder = re.compile("^wlan[0-9]+")
-# Find all wireless interface from iwconfig command
-wlan_int_list = wlan_finder.findall(subprocess.run(["iwconfig"], capture_output=True).stdout.decode())
-
-## Debug Check Wlan list
-# print(wlan_int_list)
-
-# if no wlan found, print msg and exit
-if len(wlan_int_list) == 0:
-    print("No WiFi Adapter Found in the system")
-    exit()
-
-# Show available WiFi interfaces
-clear()
-banner()
-print("WiFi Adapter List: ")
-print("[index] - [item]")
-for index, item in enumerate(wlan_int_list):
-    print(f"{index} - {item}")
-
-# Ask for selection
-while True:
-    wlan_select = input("Please enter index number of the WiFi adpator you wish to use \n")
-    try:
-        if wlan_int_list[int(wlan_select)]:
-            break
-    except:
-        print("Please select from the list")
-
-# wlan_using will be the wlan adpater for use
-wlan_using = wlan_int_list[int(wlan_select)]
-
-# run command to kill all the conflict processes to switch to monitoring mode
-kill_confilict_processes =  subprocess.run(["sudo", "airmon-ng", "check", "kill"])
-
-# run command to switch wlan to monitoring more
-wlan_monitoring_mode = subprocess.run(["sudo", "airmon-ng", "start", wlan_using])
-
-#before creating csv file, move csv file to the backup folder
-backup_old_csv()
-
-# Discover access points and output to WAP_list-01.csv
-discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"WAP_list","--write-interval", "1","--output-format", "csv", wlan_using + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-# Check if target WAP broadcast ESSID
-clear()
-banner()
-while True:
-    WAP_Broad = input("Does target WAP broadcast ESSID? (no for 0, yes for 1) \n")
-    try:
-        if WAP_Broad == "0" or WAP_Broad == "1":
-            break
-    except:
-        print("Invalid input, please try again")
-        
 # Load csv file and dump it to list
 try:
     while True:
@@ -181,16 +114,12 @@ try:
                 
         # The script sleep for 1 second before loading the updated list.
         time.sleep(1)
-                
+        
 except KeyboardInterrupt:
-    # Rocever Wlan Interface
-    wlan_stop_monitoring_mode = subprocess.run(["sudo", "airmon-ng", "stop", wlan_using + "mon"])
-    start_Network_manager = subprocess.run(["sudo", "systemctl", "start", "NetworkManager"])
-
 # Checking Evil Twins
 # Copy ESSID from the dictionary to List for comparison
-for index, item in enumerate(wireless_lists):
-    comparing_lists.append(item['ESSID'])
+    for index, item in enumerate(wireless_lists):
+        comparing_lists.append(item['ESSID'])
 
 # Comparing ESSIDs to find out the Evil Twin
 for i in range(len(comparing_lists)):
@@ -236,19 +165,8 @@ for i in range(len(wireless_lists)):
     elif wireless_lists[i]['Evil_Twin_ind'] == "Red" or wireless_lists[i]['Cipher_ind'] == "Red" or wireless_lists[i]['Cipher_ind'] == "Red":
         if wireless_lists[i]['Alert'] == "Green" or "Amber":
             wireless_lists[i]['Alert'] = "Red"
+	
+#print(comparing_lists)
 
-print("\n")
-
-while True:
-    choice = input("Please make choice you wish to Check")
-    try:
-        if wireless_lists[int(choice)]:
-            break
-    except:
-        print("Invalid Input. \n Please try again. \n")
-
-try:
-    
-    while True:
-
-except KeyboardInterrupt:
+check(1)
+#print(wireless_lists)
