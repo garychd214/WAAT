@@ -127,16 +127,6 @@ backup_old_csv()
 # Discover access points and output to WAP_list-01.csv
 discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"WAP_list","--write-interval", "1","--output-format", "csv", wlan_using + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-# Check if target WAP broadcast ESSID
-clear()
-banner()
-while True:
-    WAP_Broad = input("Does target WAP broadcast ESSID? (no for 0, yes for 1) \n")
-    try:
-        if int(WAP_Broad) == "0" or int(WAP_Broad) == "1":
-            break
-    except:
-        print("Invalid input, please try again")
         
 # Load csv file and dump it to list
 try:
@@ -161,23 +151,13 @@ try:
                             wireless_lists.append(row)
 
             # Wireless Access Point Broadcasting
-            if(WAP_Broad == "1"):
-                clear()
-                print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
-                # showing only ESSID
-                print("No ||\tESSID                         |")
-                print("___||\t______________________________|")
-                for index, item in enumerate(wireless_lists):
-                    print(f"{index}\t{item['ESSID']}")
-            # Wireless Access Point NOT Broadcasting
-            if(WAP_Broad == "0"):
-                clear()
-                print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
-                # showing only ESSID
-                print("No |\tBSSID              |\tID_length|\tESSID                         |")
-                print("___|\t___________________|\t_________|\t______________________________|")
-                for index, item in enumerate(wireless_lists):
-                    print(f"{index}\t{item['BSSID']}\t{item['ID_length'].strip()}\t\t{item['ESSID']}")
+            clear()
+            print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
+            # showing only ESSID
+            print("No |\tBSSID              |\tID_length|\tESSID                         |")
+            print("___|\t___________________|\t_________|\t______________________________|")
+            for index, item in enumerate(wireless_lists):
+                print(f"{index}\t{item['BSSID']}\t{item['ID_length'].strip()}\t\t{item['ESSID']}")
                 
         # The script sleep for 1 second before loading the updated list.
         time.sleep(1)
