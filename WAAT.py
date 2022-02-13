@@ -21,7 +21,6 @@ def banner():
     print ("|    | | _ | ||   _   ||   _   ||       |    |")
     print ("|    | || || ||  |_|  ||  |_|  ||_     _|    |")
     print ("|    |       ||       ||       |  |   |      |")
-    print ("|    |       ||       ||       |  |   |      |")
     print ("|    |   _   ||   _   ||   _   |  |   |      |")
     print ("|    |__| |__||__| |__||__| |__|  |___|      |")
     print ("|                                            |")
@@ -59,6 +58,24 @@ def Checking_Bssid(bssid, lst):
         if bssid in item["BSSID"]:
             check_status = False
     return check_status
+
+def Result(evil, encryption, cipher):
+    if(evil == "_Red_"):
+        print("Evil Twin\n[Risks] \n Evil twin attacks pose a significant cybersecurity risk for both end users and businesses. \n\n")
+        print("[Description] \n\n An evil twin is a fraudulent Wi-Fi access point that appears to be legitimate but is set up to eavesdrop on wireless communications. \nThe evil twin is the wireless LAN equivalent of the phishing scam. \nThis type of attack may be used to steal the passwords of unsuspecting users, either by monitoring their connections or by phishing, which involves setting up a fraudulent web site and luring people there.")
+        print("\n\n[Possible Damage] \n\n To USERS \n Hackers often use evil twin attacks to gain access to personal user data like login credentials, bank transactions and credit card information. This is especially dangerous for users who use the same username and password for multiple accounts, since the hacker could gain access to all of them by monitoring just one login attempt.")
+        print("\n To Business \n If a user logs into their company’s portal while connected to an evil twin network, the hacker can gain access to the company website using the employee’s credentials. This poses a significant cybersecurity risk as hackers can then access company data or plant malware in the system.")
+        print("\n\n[Suggestion] \n\n 1. Disable auto-connect features in your devices \n If auto-connect features are on, the device will connect to the hacker device when the hacker attacks WAP.")
+        print("2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) \n Hacker could capture data you send.")
+        print("3. Use VPN \nVPN encrypts your data on the Internet. (Ensure to use secure VPN service with strong encryption protocols)")
+    if(encryption == "_Red_"):
+        print("")
+    if(encryption == "Amber"):
+        print("")
+    if(cipher == "_Red_"):
+        print("")
+    if(cipher == "Amber"):
+        print("")
 
 
 clear()
@@ -152,7 +169,9 @@ try:
 
             # Wireless Access Point Broadcasting
             clear()
-            print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check \n")
+            print()
+            print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check")
+            print()
             # showing only ESSID
             print("No |\tBSSID              |\tID_length|\tESSID                         |")
             print("___|\t___________________|\t_________|\t______________________________|")
@@ -210,10 +229,10 @@ for i in range(len(wireless_lists)):
 		
 # Set Alert.
 for i in range(len(wireless_lists)):
-    if wireless_lists[i]['Evil_Twin_ind'] == "Amber" or wireless_lists[i]['Privacy'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber":
+    if wireless_lists[i]['Evil_Twin_ind'] == "Amber" or wireless_lists[i]['Encryption_ind'] == "Amber" or wireless_lists[i]['Cipher_ind'] == "Amber":
         if wireless_lists[i]['Alert'] == "Green":
             wireless_lists[i]['Alert'] = "Amber"
-    elif wireless_lists[i]['Evil_Twin_ind'] == "_Red_" or wireless_lists[i]['Privacy'] == "_Red_" or wireless_lists[i]['Cipher_ind'] == "_Red_":
+    elif wireless_lists[i]['Evil_Twin_ind'] == "_Red_" or wireless_lists[i]['Encryption_ind'] == "_Red_" or wireless_lists[i]['Cipher_ind'] == "_Red_":
         if wireless_lists[i]['Alert'] == "Green" or "Amber":
             wireless_lists[i]['Alert'] = "_Red_"
 
@@ -224,7 +243,7 @@ user_stop_ind = False
 
 while user_stop_ind == False:
     while True:
-        choice = input("Please make choice you wish to Check")
+        choice = input("Please make choice you wish to Check\n")
         try:
             if wireless_lists[int(choice)]:
                 break
@@ -233,5 +252,5 @@ while user_stop_ind == False:
     
     print(wireless_lists[int(choice)]['BSSID'], "\n \n")
     print("|____EvilTwin____|\t___Encryption___|\t_____Cipher_____|")
-    print(f"|_____{wireless_lists[int(choice)]['Evil_Twin_ind']}_____|\t_____{wireless_lists[int(choice)]['Privacy']}_____|\t_____{wireless_lists[int(choice)]['Cipher_ind']}_____")
+    print(f"______{wireless_lists[int(choice)]['Evil_Twin_ind']}______\t______{wireless_lists[int(choice)]['Encryption_ind']}______|\t______{wireless_lists[int(choice)]['Cipher_ind']}______")
     
