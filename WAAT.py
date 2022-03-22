@@ -59,23 +59,98 @@ def Checking_Bssid(bssid, lst):
             check_status = False
     return check_status
 
+def Encryption():
+    print("Encryption")
+    print("[Description]")
+    print()
+    print("Encryption is the process of converting traffic using the cipher.")
+    print("There are no apparent physical borders in WLANs because it’s using radio waves. Therefore WLAN can be listened to by anyone within the range and potentially connect to other traffics. The encryption for WLAN keeps data private, so only the appropriate parties can understand the data.")
+    print()
+    print("[Risks]")
+    print("Whenever encryption is cracked, the hacker could read the traffic that might contain the user’s credentials, PII, or even financial information and alter the traffic by performing a Man-in-the-Middle(MITM) attack. ")
+    print()
+    print("[Possible Damage]")
+    print("There are indefinite damages that could happen to the user and/or the business. It could expose the user’s credentials for social media or email systems, leak sensitive information, or cause secondary damage such as uses for crimes like scams or fraud. Moreover, the hacker could perform a “Session Hijack” on your bank screen or PayPal and process financial transactions.")
+    print()
+
+def Cipher():
+    print("Cipher")
+    print("[Description]")
+    print()
+    print("Cipher is a method (algorithm) used for the encryption process.")
+    print()
+    print("[Risks]")
+    print("If encryption is deciphered, the hacker can see all the traffic in cleartext. If there is SI in the traffic, a data leak could occur.")
+    print()
+    print("[Possible Damage]")
+    print("There are indefinite damages that could happen to the user and/or the business. It could expose the user’s credentials for social media or email systems, leak sensitive information, or cause secondary damage such as uses for crimes like scams or fraud. ")
+    print()
+
 def Result(evil, encryption, cipher):
     if(evil == "_Red_"):
-        print("Evil Twin\n[Risks] \n Evil twin attacks pose a significant cybersecurity risk for both end users and businesses. \n\n")
+        print("Evil Twin\n[Risks] \nEvil twin attacks pose a significant cybersecurity risk for both end users and businesses. \n\n")
         print("[Description] \n\n An evil twin is a fraudulent Wi-Fi access point that appears to be legitimate but is set up to eavesdrop on wireless communications. \nThe evil twin is the wireless LAN equivalent of the phishing scam. \nThis type of attack may be used to steal the passwords of unsuspecting users, either by monitoring their connections or by phishing, which involves setting up a fraudulent web site and luring people there.")
         print("\n\n[Possible Damage] \n\n To USERS \n Hackers often use evil twin attacks to gain access to personal user data like login credentials, bank transactions and credit card information. This is especially dangerous for users who use the same username and password for multiple accounts, since the hacker could gain access to all of them by monitoring just one login attempt.")
         print("\n To Business \n If a user logs into their company’s portal while connected to an evil twin network, the hacker can gain access to the company website using the employee’s credentials. This poses a significant cybersecurity risk as hackers can then access company data or plant malware in the system.")
-        print("\n\n[Suggestion] \n\n 1. Disable auto-connect features in your devices \n If auto-connect features are on, the device will connect to the hacker device when the hacker attacks WAP.")
+        print("\n\n[Suggestion] \n\n1. Disable auto-connect features in your devices \n If auto-connect features are on, the device will connect to the hacker device when the hacker attacks WAP.")
         print("2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) \n Hacker could capture data you send.")
         print("3. Use VPN \nVPN encrypts your data on the Internet. (Ensure to use secure VPN service with strong encryption protocols)")
-    if(encryption == "_Red_"):
-        print("")
-    if(encryption == "Amber"):
-        print("")
-    if(cipher == "_Red_"):
-        print("")
-    if(cipher == "Amber"):
-        print("")
+    if(encryption == "OPN"):
+        print("Encryption is NOT SECURE / OPEN")
+        Encryption()
+        print("Encryption: OPEN")
+        print("[Description]")
+        print()
+        print("There is no encryption in the traffic.")
+        print()
+        print("[Suggestion]")
+        print("1. Utilize the Encryption.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        
+    if(encryption == "WEP"):
+        print("Encryption is weak / WEP")
+        Encryption()
+        print("Encryption: WEP")
+        print("[Description]")
+        print("In WEP authentication, a wireless device sends an authentication request to the access point, which will reply with a 64-bit or 128-bit challenge in cleartext. The client will sign that challenge with the shared secret key and send it back to the access point. The AP will decrypt the signed message using the same shared key as the client did and verify the challenge sent.")
+        print("Because WEP uses 64-bit or 128-bit challenge to grant access, the hacker only needs to know the challenge code, not the actual password.")
+        print()
+        print("[Strength]")
+        print("According to aircrack-ng documentation, 64-bit WEP can usually be cracked in less than 5 minutes (generally less than 60 seconds), and 128-bit usually takes 30 minutes to an hour. ")
+        print("Also, the result from the article, “Vulnerability issues on research in WLAN encryption algorithms WEP WPA/WPA2 Personal,” took around a minute or two for 64-bit WEP and three to four minutes for 128-bit WEP.")
+        print()
+        print("[Suggestion]")
+        print("1. Utilize better Encryption with Chipher.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        
+    if(encryption == "WPA"):
+        print("Encryption is weak / WPA")
+        Encryption()
+        print("Encryption: WPA")
+        print("[Description]")
+        print("WPA is the next version of encryption after WEP. It can provide security and ensure that only authorized users can access the WLAN. It uses improved RC4 data encryption that uses Temporary Key Integrity Protocol(TKIP) and 802.1x authentication. ")
+        print("WPA is stronger than WEP, but it uses TKIP cipher, which is depreciated by WPA2-AES and vulnerable to MIC key recovery attacks, Chop-Chop Attack, etc.")
+        print("However, WPA is compatible with the older software; users might require to use it.")
+        print()
+        print("[Strength]")
+        print("WPA is way stronger than WEP, but there are multiple attacks for the TKIP cipher.")
+        print()
+        print("[Suggestion]")
+        print("1. Upgrade to WPA2 after confirming all devices and software supports WPA2.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        
+    if(cipher == "TKIP"):
+        print("Cipher is Weak / TKIP")
+        Cipher()
+        print("Cipher: TKIP")
+        print("[Description]")
+        print("TKIP was developed to improve the security of WEP. TKIP wraps the WEP by adding extra code at the beginning and end of every data packet. It uses the same 4RC data encryption with new security characteristics such as per-packet key hashing, sequence counter, etc.")
+        print()
+        print("[Suggestion]")
+        print("1. Use PSK cipher after confirming the compatibility of all devices and software.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        
+    if(cipher == ""):
+        print("There is no Cipher")
+        Cipher()
+
+
 
 
 clear()
@@ -210,12 +285,12 @@ for i in range(len(wireless_lists)):
 		
     elif "WPA2" in wireless_lists[i]['Privacy']:
         if "TKIP" in wireless_lists[i]['Cipher']:
-            wireless_lists[i]['Cipher_ind'] = "_Red_"
+            wireless_lists[i]['Cipher_ind'] = "Amber"
 			        
     elif "WPA" in wireless_lists[i]['Privacy']:
         if "TKIP" in wireless_lists[i]['Cipher']:
             wireless_lists[i]['Encryption_ind'] = "_Red_"
-            wireless_lists[i]['Cipher_ind'] = "_Red_"
+            wireless_lists[i]['Cipher_ind'] = "Amber"
         elif "AES" or "CCMP" in wireless_lists[i]['Cipher']:
             wireless_lists[i]['Encryption_ind'] = "Amber"
             wireless_lists[i]['Cipher_ind'] = "Amber"
