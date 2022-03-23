@@ -88,7 +88,7 @@ def Cipher():
 
 def Evil_Result(evil):
     if(evil == "_Red_"):
-        print("Evil Twin\n[Risks] \nEvil twin attacks pose a significant cybersecurity risk for both end users and businesses. \n\n")
+        print("\033[1;31m Evil Twin\033[0;0m \n[Risks] \nEvil twin attacks pose a significant cybersecurity risk for both end users and businesses. \n\n")
         print("[Description] \n\n An evil twin is a fraudulent Wi-Fi access point that appears to be legitimate but is set up to eavesdrop on wireless communications. \nThe evil twin is the wireless LAN equivalent of the phishing scam. \nThis type of attack may be used to steal the passwords of unsuspecting users, either by monitoring their connections or by phishing, which involves setting up a fraudulent web site and luring people there.")
         print("\n\n[Possible Damage] \n\n To USERS \n Hackers often use evil twin attacks to gain access to personal user data like login credentials, bank transactions and credit card information. This is especially dangerous for users who use the same username and password for multiple accounts, since the hacker could gain access to all of them by monitoring just one login attempt.")
         print("\n To Business \n If a user logs into their company’s portal while connected to an evil twin network, the hacker can gain access to the company website using the employee’s credentials. This poses a significant cybersecurity risk as hackers can then access company data or plant malware in the system.")
@@ -98,20 +98,21 @@ def Evil_Result(evil):
 
 def Encryption_Result(encryption):
     if(encryption == "OPN"):
-        print("Encryption is NOT SECURE / OPEN")
+        print("Encryption is \033[1;31m NOT SECURE / OPEN\033[0;0m")
         Encryption()
-        print("Encryption: OPEN")
+        print("Encryption: \033[1;31m OPEN\033[0;0m")
         print("[Description]")
         print()
         print("There is no encryption in the traffic.")
         print()
         print("[Suggestion]")
         print("1. Utilize the Encryption.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
-        
+        print()
+
     if(encryption == "WEP"):
-        print("Encryption is weak / WEP")
+        print("Encryption is \033[1;31m weak / WEP\033[0;0m")
         Encryption()
-        print("Encryption: WEP")
+        print("Encryption: \033[1;31m WEP\033[0;0m")
         print("[Description]")
         print("In WEP authentication, a wireless device sends an authentication request to the access point, which will reply with a 64-bit or 128-bit challenge in cleartext. The client will sign that challenge with the shared secret key and send it back to the access point. The AP will decrypt the signed message using the same shared key as the client did and verify the challenge sent.")
         print("Because WEP uses 64-bit or 128-bit challenge to grant access, the hacker only needs to know the challenge code, not the actual password.")
@@ -122,11 +123,12 @@ def Encryption_Result(encryption):
         print()
         print("[Suggestion]")
         print("1. Utilize better Encryption with Chipher.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
-        
+        print()
+
     if(encryption == "WPA"):
-        print("Encryption is weak / WPA")
+        print("Encryption is \033[1;33m weak / WPA\033[0;0m")
         Encryption()
-        print("Encryption: WPA")
+        print("Encryption: \033[1;33m WPA\033[0;0m")
         print("[Description]")
         print("WPA is the next version of encryption after WEP. It can provide security and ensure that only authorized users can access the WLAN. It uses improved RC4 data encryption that uses Temporary Key Integrity Protocol(TKIP) and 802.1x authentication. ")
         print("WPA is stronger than WEP, but it uses TKIP cipher, which is depreciated by WPA2-AES and vulnerable to MIC key recovery attacks, Chop-Chop Attack, etc.")
@@ -137,21 +139,25 @@ def Encryption_Result(encryption):
         print()
         print("[Suggestion]")
         print("1. Upgrade to WPA2 after confirming all devices and software supports WPA2.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        print()
 
 def Cipher_Result(cipher):
     if(cipher == "TKIP"):
-        print("Cipher is Weak / TKIP")
+        print("Cipher is \033[1;33m Weak / TKIP \033[0;0m")
         Cipher()
-        print("Cipher: TKIP")
+        print("Cipher: \033[1;33m TKIP\033[0;0m")
         print("[Description]")
         print("TKIP was developed to improve the security of WEP. TKIP wraps the WEP by adding extra code at the beginning and end of every data packet. It uses the same 4RC data encryption with new security characteristics such as per-packet key hashing, sequence counter, etc.")
         print()
         print("[Suggestion]")
-        print("1. Use PSK cipher after confirming the compatibility of all devices and software.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
-        
+        print("1. Use PSK / AES cipher after confirming the compatibility of all devices and software.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        print()
+
     if(cipher == ""):
-        print("There is no Cipher")
+        print("\033[1;31mThere is no Cipher\033[0;0m")
         Cipher()
+        print("1. Use PSK / AES cipher after confirming the compatibility of all devices and software.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
+        print()
 
 
 
@@ -338,43 +344,68 @@ while True:
 def page1():
     clear()
     banner()
-    print(f"Evil Twin: {wireless_lists[int(choice)]['Evil_Twin_ind']}")
-    print(f"Encryption: {wireless_lists[int(choice)]['Encryption_ind']}")
-    print(f"Cipher Twin: {wireless_lists[int(choice)]['Cipher_ind']}")
-    print("press D for Next page")
+    if wireless_lists[int(choice)]['Evil_Twin_ind'] == "Green":
+        Evil_Output = f"\033[1;32m {wireless_lists[int(choice)]['Evil_Twin_ind']}\033[0;0m"
+    else:
+        Evil_Output = f"\033[1;31m {wireless_lists[int(choice)]['Evil_Twin_ind']}\033[0;0m"
+
+    if wireless_lists[int(choice)]['Encryption_ind'] == "Green":
+        Encryption_Output = f"\033[1;32m {wireless_lists[int(choice)]['Privacy']}\033[0;0m"
+    elif wireless_lists[int(choice)]['Encryption_ind'] == "Amber":
+        Encryption_Output = f"\033[1;33m {wireless_lists[int(choice)]['Privacy']}\033[0;0m"
+    else:
+        Encryption_Output = f"\033[1;31m {wireless_lists[int(choice)]['Privacy']}\033[0;0m"
+    
+    if wireless_lists[int(choice)]['Cipher_ind'] == "Green":
+        Cipher_Output = f"\033[1;32m {wireless_lists[int(choice)]['Cipher']}\033[0;0m"
+    elif wireless_lists[int(choice)]['Cipher_ind'] == "Amber":
+        Cipher_Output = f"\033[1;33m {wireless_lists[int(choice)]['Cipher']}\033[0;0m"
+    else:
+        Cipher_Output = f"\033[1;31m {wireless_lists[int(choice)]['Cipher']}\033[0;0m"
+
+    print(f"Evil Twin: {Evil_Output}")
+    print(f"Encryption: {Encryption_Output}")
+    print(f"Cipher: {Cipher_Output}")
+    print("")
+    if not IsSecure:
+        print("Type D for Next page")
     
 def page2():
     clear()
     banner()
-    Evil_Result(wireless_lists[int(choice)]['Evil_Twin_ind'])
-    print("press A for Previous page or D for Next page")
+    Evil_Result(str(wireless_lists[int(choice)]['Evil_Twin_ind']).strip())
+    print("Type A for Previous page or D for Next page")
 
 def page3():
     clear()
     banner()
-    Encryption_Result(wireless_lists[int(choice)]['Privacy'])
-    print("press A for Previous page or D for Next page")
+    Encryption_Result(str(wireless_lists[int(choice)]['Privacy']).strip())
+    print("Type A for Previous page or D for Next page")
     
 def page4():
     clear()
     banner()
-    Cipher_Result(wireless_lists[int(choice)]['Cipher'])
-    print("press A for Previous page")
+    Cipher_Result(str(wireless_lists[int(choice)]['Cipher']).strip())
+    print("Type A for Previous page")
 
 # Page navigator
 page = 1
 clear()
 banner()
-page1()
 if wireless_lists[int(choice)]['Evil_Twin_ind'] == "Green" and wireless_lists[int(choice)]['Encryption_ind'] == "Green" and wireless_lists[int(choice)]['Cipher_ind'] == "Green":
+    IsSecure = True
+    page1()
     print("Your Wireless Access Point is Secure!")
+
 else:
-    print("press A for Previous page or D for Next page")
+    IsSecure = False
+    page1()
+    print("Type A for Previous page or D for Next page")
     while True:
         Choice = input()
         if Choice != "a" and Choice != "A" and Choice != "d" and Choice != "D":
             print("invalid input")
-            print("press A for Previous page or D for Next page")
+            print("Type A for Previous page or D for Next page")
         else:
             if Choice == "a" or Choice == "A":
                 if page == 2:
@@ -382,7 +413,7 @@ else:
                     page = 1
                     print()
 
-                if page == 3:
+                elif page == 3:
                     if wireless_lists[int(choice)]['Evil_Twin_ind'] != "Green":
                         page2()
                         page = 2
@@ -392,7 +423,7 @@ else:
                         page = 1
                         print()
                         
-                if page == 4:
+                elif page == 4:
                     if wireless_lists[int(choice)]['Encryption_ind'] != "Green":
                         page3()
                         page = 3
@@ -425,7 +456,7 @@ else:
                             else:
                                 print("End of the page!\n")
 
-                if page == 2:
+                elif page == 2:
                     if wireless_lists[int(choice)]['Encryption_ind'] != "Green":
                         page3()
                         page = 3
@@ -438,7 +469,7 @@ else:
                         else:
                             print("End of the page!\n")
 
-                if page == 3:
+                elif page == 3:
                     if wireless_lists[int(choice)]['Cipher_ind'] != "Green":
                         page4()
                         page = 4
