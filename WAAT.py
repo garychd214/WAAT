@@ -11,6 +11,7 @@ import os
 import time
 import shutil
 from datetime import datetime
+import keyboard
 
 wireless_lists = []
 comparing_lists = []
@@ -86,7 +87,7 @@ def Cipher():
     print("There are indefinite damages that could happen to the user and/or the business. It could expose the user’s credentials for social media or email systems, leak sensitive information, or cause secondary damage such as uses for crimes like scams or fraud. ")
     print()
 
-def Result(evil, encryption, cipher):
+def Evil_Result(evil):
     if(evil == "_Red_"):
         print("Evil Twin\n[Risks] \nEvil twin attacks pose a significant cybersecurity risk for both end users and businesses. \n\n")
         print("[Description] \n\n An evil twin is a fraudulent Wi-Fi access point that appears to be legitimate but is set up to eavesdrop on wireless communications. \nThe evil twin is the wireless LAN equivalent of the phishing scam. \nThis type of attack may be used to steal the passwords of unsuspecting users, either by monitoring their connections or by phishing, which involves setting up a fraudulent web site and luring people there.")
@@ -95,6 +96,8 @@ def Result(evil, encryption, cipher):
         print("\n\n[Suggestion] \n\n1. Disable auto-connect features in your devices \n If auto-connect features are on, the device will connect to the hacker device when the hacker attacks WAP.")
         print("2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) \n Hacker could capture data you send.")
         print("3. Use VPN \nVPN encrypts your data on the Internet. (Ensure to use secure VPN service with strong encryption protocols)")
+
+def Encryption_Result(encryption):
     if(encryption == "OPN"):
         print("Encryption is NOT SECURE / OPEN")
         Encryption()
@@ -135,7 +138,8 @@ def Result(evil, encryption, cipher):
         print()
         print("[Suggestion]")
         print("1. Upgrade to WPA2 after confirming all devices and software supports WPA2.\n2. Avoid using Sensitive information (Personal Identifiable Information, Financial information, Protected Health Information, etc.) ")
-        
+
+def Cipher_Result(cipher):
     if(cipher == "TKIP"):
         print("Cipher is Weak / TKIP")
         Cipher()
@@ -328,4 +332,62 @@ while user_stop_ind == False:
     print(wireless_lists[int(choice)]['BSSID'], "\n \n")
     print("|____EvilTwin____|\t___Encryption___|\t_____Cipher_____|")
     print(f"______{wireless_lists[int(choice)]['Evil_Twin_ind']}______\t______{wireless_lists[int(choice)]['Encryption_ind']}______|\t______{wireless_lists[int(choice)]['Cipher_ind']}______")
+
+# page 1: Main page
+# page 2: Evil Twin
+# page 3: Privacy
+# page 4: Cipher
+
+# Defining Pages
+def page1():
+    clear()
+    banner()
+    print(f"Evil Twin: {wireless_lists[int(choice)]['Evil_Twin_ind']}")
+    print(f"Encryption: {wireless_lists[int(choice)]['Encryption_ind']}")
+    print(f"Cipher Twin: {wireless_lists[int(choice)]['Cipher_ind']}")
+    print("press D for Next page")
     
+def page2():
+    clear()
+    banner()
+    Evil_Result(wireless_lists[int(choice)]['Evil_Twin_ind'])
+    print("press A for Previous page or D for Next page")
+
+def page3():
+    clear()
+    banner()
+    Encryption_Result(wireless_lists[int(choice)]['Encryption'])
+    print("press A for Previous page or D for Next page")
+    
+def page4():
+    clear()
+    banner()
+    Cipher_Result(wireless_lists[int(choice)]['Cipher'])
+    print("press A for Previous page")
+
+# Page navigator
+page = 1
+clear()
+banner()
+while True:
+    if keyboard.is_pressed("a" or "A"):
+        if page == 2:
+            page1()
+            page = 1
+        if page == 3:
+            page2()
+            page = 2
+        if page == 4:
+            page3()
+            page = 3
+    if keyboard.is_pressed("d" or "D"):
+        if page == 1:
+            page2()
+            page = 2
+        if page == 2:
+            page3()
+            page = 3
+        if page == 3:
+            page4()
+            page = 4
+        
