@@ -11,7 +11,6 @@ import os
 import time
 import shutil
 from datetime import datetime
-import keyboard
 
 wireless_lists = []
 comparing_lists = []
@@ -248,6 +247,7 @@ try:
 
             # Wireless Access Point Broadcasting
             clear()
+            banner()
             print()
             print("Scanning. Press Ctrl + C when you want to select wireless network you wish to check")
             print()
@@ -318,21 +318,17 @@ for i in range(len(wireless_lists)):
 print("\n")
 
 
-user_stop_ind = False
-
-while user_stop_ind == False:
-    while True:
-        choice = input("Please make choice you wish to Check\n")
-        try:
-            if wireless_lists[int(choice)]:
-                break
-        except:
-            print("Invalid Input. \n Please try again. \n")
+while True:
+    choice = input("Please make choice you wish to Check\n")
+    try:
+        if wireless_lists[int(choice)]:
+            break
+    except IndexError:
+        print("Please choose from above\n")
+        
+    except ValueError:
+        print("Please enter index\n")
     
-    print(wireless_lists[int(choice)]['BSSID'], "\n \n")
-    print("|____EvilTwin____|\t___Encryption___|\t_____Cipher_____|")
-    print(f"______{wireless_lists[int(choice)]['Evil_Twin_ind']}______\t______{wireless_lists[int(choice)]['Encryption_ind']}______|\t______{wireless_lists[int(choice)]['Cipher_ind']}______")
-
 # page 1: Main page
 # page 2: Evil Twin
 # page 3: Privacy
@@ -356,7 +352,7 @@ def page2():
 def page3():
     clear()
     banner()
-    Encryption_Result(wireless_lists[int(choice)]['Encryption'])
+    Encryption_Result(wireless_lists[int(choice)]['Privacy'])
     print("press A for Previous page or D for Next page")
     
 def page4():
@@ -369,25 +365,83 @@ def page4():
 page = 1
 clear()
 banner()
-while True:
-    if keyboard.is_pressed("a" or "A"):
-        if page == 2:
-            page1()
-            page = 1
-        if page == 3:
-            page2()
-            page = 2
-        if page == 4:
-            page3()
-            page = 3
-    if keyboard.is_pressed("d" or "D"):
-        if page == 1:
-            page2()
-            page = 2
-        if page == 2:
-            page3()
-            page = 3
-        if page == 3:
-            page4()
-            page = 4
-        
+page1()
+if wireless_lists[int(choice)]['Evil_Twin_ind'] == "Green" and wireless_lists[int(choice)]['Encryption_ind'] == "Green" and wireless_lists[int(choice)]['Cipher_ind'] == "Green":
+    print("Your Wireless Access Point is Secure!")
+else:
+    print("press A for Previous page or D for Next page")
+    while True:
+        Choice = input()
+        if Choice != "a" and Choice != "A" and Choice != "d" and Choice != "D":
+            print("invalid input")
+            print("press A for Previous page or D for Next page")
+        else:
+            if Choice == "a" or Choice == "A":
+                if page == 2:
+                    page1()
+                    page = 1
+                    print()
+
+                if page == 3:
+                    if wireless_lists[int(choice)]['Evil_Twin_ind'] != "Green":
+                        page2()
+                        page = 2
+                        print()
+                    else:
+                        page1()
+                        page = 1
+                        print()
+                        
+                if page == 4:
+                    if wireless_lists[int(choice)]['Encryption_ind'] != "Green":
+                        page3()
+                        page = 3
+                        print()
+                    else:
+                        if wireless_lists[int(choice)]['Evil_Twin_ind'] != "Green":
+                            page2()
+                            page = 2
+                            print()
+                        else:
+                            page1()
+                            page = 1
+                            print()
+            if Choice == "d" or Choice == "D":
+                if page == 1:
+                    if wireless_lists[int(choice)]['Evil_Twin_ind'] != "Green":
+                        page2()
+                        page = 2
+                        print()
+                    else:
+                        if wireless_lists[int(choice)]['Encryption_ind'] != "Green":
+                            page3()
+                            page = 3
+                            print()
+                        else:
+                            if wireless_lists[int(choice)]['Cipher_ind'] != "Green":
+                                page4()
+                                page = 4
+                                print()
+                            else:
+                                print("End of the page!\n")
+
+                if page == 2:
+                    if wireless_lists[int(choice)]['Encryption_ind'] != "Green":
+                        page3()
+                        page = 3
+                        print()
+                    else:
+                        if wireless_lists[int(choice)]['Cipher_ind'] != "Green":
+                            page4()
+                            page = 4
+                            print()
+                        else:
+                            print("End of the page!\n")
+
+                if page == 3:
+                    if wireless_lists[int(choice)]['Cipher_ind'] != "Green":
+                        page4()
+                        page = 4
+                        print()
+                    else:
+                        print("End of the page!\n")
