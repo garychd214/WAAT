@@ -168,6 +168,7 @@ banner()
 ## Initial Checkup, 
 # 1. Check if it's running wiht sudo.
 # 2. Check if aircrack-ng package is installed.
+# 3. Check if wlan interface is available.
 
 # If script doesn't run with super user privileges, break the script
 if not 'SUDO_UID' in os.environ.keys():
@@ -219,7 +220,7 @@ wlan_using = wlan_int_list[int(wlan_select)]
 # run command to kill all the conflict processes to switch to monitoring mode
 kill_confilict_processes =  subprocess.run(["sudo", "airmon-ng", "check", "kill"])
 
-# run command to switch wlan to monitoring more
+# run command to switch wlan to monitoring mode
 wlan_monitoring_mode = subprocess.run(["sudo", "airmon-ng", "start", wlan_using])
 
 #before creating csv file, move csv file to the backup folder
@@ -229,7 +230,7 @@ backup_old_csv()
 discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"WAP_list","--write-interval", "1","--output-format", "csv", wlan_using + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         
-# Load csv file and dump it to list
+# Load csv file and dump it to Dictionary (Hashtable) 
 try:
     while True:
         for file_name in os.listdir():
@@ -344,6 +345,7 @@ while True:
 def page1():
     clear()
     banner()
+    # If indicator is Green, Print Green font. Amber for yellow, _Red_ for red. 
     if wireless_lists[int(choice)]['Evil_Twin_ind'] == "Green":
         Evil_Output = f"\033[1;32m {wireless_lists[int(choice)]['Evil_Twin_ind']}\033[0;0m"
     else:
@@ -370,6 +372,7 @@ def page1():
     if not IsSecure:
         print("Type D for Next page")
     
+# All Def is located on top of the script
 def page2():
     clear()
     banner()
@@ -389,6 +392,8 @@ def page4():
     print("Type A for Previous page")
 
 # Page navigator
+# Page starts with Main Page
+# Everytime user Navigate, it'll update the page
 page = 1
 clear()
 banner()
@@ -407,13 +412,15 @@ else:
             print("invalid input")
             print("Type A for Previous page or D for Next page")
         else:
+            # 'A' Means going left
             if Choice == "a" or Choice == "A":
+                # If page is 2, going left, goto page1
                 if page == 2:
                     page1()
                     page = 1
                     print()
-
                 elif page == 3:
+                    # If Evil Twin is green, Skip page 2
                     if wireless_lists[int(choice)]['Evil_Twin_ind'] != "Green":
                         page2()
                         page = 2
@@ -422,8 +429,8 @@ else:
                         page1()
                         page = 1
                         print()
-                        
                 elif page == 4:
+                    # If Encryption is green, skip page 3
                     if wireless_lists[int(choice)]['Encryption_ind'] != "Green":
                         page3()
                         page = 3
