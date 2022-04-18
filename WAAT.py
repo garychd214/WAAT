@@ -185,7 +185,7 @@ else:
     banner()
 
 # wlan interface finder
-wlan_finder = re.compile("^wlan[0-9]+")
+wlan_finder = re.compile("^wlan[0-9]+|^wlp[0-9]+")
 # Find all wireless interface from iwconfig command
 wlan_int_list = wlan_finder.findall(subprocess.run(["iwconfig"], capture_output=True).stdout.decode())
 
